@@ -1,0 +1,41 @@
+-- Create Departments table
+CREATE TABLE Departments (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255)
+);
+
+-- Create Employees table with foreign key to Departments table
+CREATE TABLE Employees (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255),
+  department_id INT,
+  FOREIGN KEY (department_id) REFERENCES Departments(id)
+);
+
+-- Insert Departments data
+INSERT INTO Departments (name) VALUES
+('HR'),
+('Engineering'),
+('Marketing');
+
+-- Insert Employees data
+INSERT INTO Employees (name, department_id) VALUES
+('John Smith', 1),
+('Jane Doe', 1),
+('Bob Johnson', 2),
+('Sara Lee', 2),
+('Mike Brown', 2),
+('Kim Lee', 3),
+('Samuel Adams', 3);
+
+--To retrieve all employees in a department, you can use a JOIN query like this:
+SELECT e.name, d.name AS department
+FROM Employees e
+JOIN Departments d ON e.department_id = d.id
+WHERE d.id = 2;
+
+--To retrieve all departments and their employees, you can use a LEFT JOIN query like this:
+SELECT d.name AS department, GROUP_CONCAT(e.name SEPARATOR ', ') AS employees
+FROM Departments d
+LEFT JOIN Employees e ON d.id = e.department_id
+GROUP BY d.id;
